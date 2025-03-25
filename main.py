@@ -3,7 +3,11 @@ import logging
 from utils.api_client import FootballAPIClient
 from utils.data_processor import DataProcessor
 from utils.cloud_storage import CloudStorageManager
-from utils.visualizations import generate_league_visualizations
+from utils.visualization import generate_league_visualizations
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -27,9 +31,9 @@ def main():
 
         # Define leagues to analyze
         leagues = [
-            {'id': 39, 'name': 'Premier League', 'season': 2022},
-            {'id': 140, 'name': 'La Liga', 'season': 2022},
-            {'id': 61, 'name': 'Ligue 1', 'season': 2022}
+            {'id': 39, 'name': 'Premier League', 'season': 2023},
+            {'id': 140, 'name': 'La Liga', 'season': 2023},
+            # {'id': 61, 'name': 'Ligue 1', 'season': 2023}
         ]
 
         # Analyze each league

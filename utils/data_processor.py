@@ -37,10 +37,9 @@ class DataProcessor:
             raw_data = self.api_client.get_league_standings(
                 league_id, season
             )
-            
             # Extract standings
             standings = raw_data['response'][0]['league']['standings'][0]
-            
+
             # Convert to DataFrame
             df = pd.DataFrame([
                 {

@@ -43,7 +43,6 @@ class FootballAPIClient:
                 headers=self.headers, 
                 params=params
             )
-            
             response.raise_for_status()  # Raise exception for bad responses
             return response.json()
         
