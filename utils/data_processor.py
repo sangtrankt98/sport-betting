@@ -30,9 +30,9 @@ class DataProcessor:
         """
         # Leagues to fetch
         leagues = [
-            'soccer_spain_la_liga',  # Premier League
+            'soccer_spain_la_liga',  # La Liga
             # Uncomment and add more leagues as needed
-            # 'soccer_spain_la_liga',  # La Liga
+            'soccer_epl',  # Premier League
         ]
         
         try:

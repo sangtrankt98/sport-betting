@@ -170,9 +170,9 @@ class OddsAPIClient:
             if markets:
                 params['markets'] = ','.join(markets)
             
-            self.logger.info(f"Fetching odds for event: {event_id} in sport: {sport}")
-            self.logger.info(f"Endpoint: {endpoint}")
-            self.logger.info(f"Parameters: {params}")
+            # self.logger.info(f"Fetching odds for event: {event_id} in sport: {sport}")
+            # self.logger.info(f"Endpoint: {endpoint}")
+            # self.logger.info(f"Parameters: {params}")
             
             # Make the API request
             response = requests.get(endpoint, params=params)

@@ -3,7 +3,6 @@ import logging
 from utils.api_client import FootballAPIClient, OddsAPIClient
 from utils.data_processor import DataProcessor
 from utils.cloud_storage import CloudStorageManager
-from utils.visualization import generate_league_visualizations
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -34,38 +33,6 @@ def main():
 
         betting_list = data_processor.fetch_multi_league_corner_odds()
         data_processor.store_to_bigquery(betting_list, 'odd_laliga_epl')
-    #     # Define leagues to analyze
-    #     leagues = [
-    #         {'id': 39, 'name': 'Premier League', 'season': 2023},
-    #         {'id': 140, 'name': 'La Liga', 'season': 2023},
-    #         # {'id': 61, 'name': 'Ligue 1', 'season': 2023}
-    #     ]
-
-    #     # Analyze each league
-    #     for league in leagues:
-    #         try:
-    #             # Fetch standings
-    #             standings_df = data_processor.fetch_league_standings(
-    #                 league['id'], 
-    #                 league['season']
-    #             )
-
-    #             # Store to BigQuery
-    #             data_processor.store_to_bigquery(
-    #                 standings_df, 
-    #                 f'standings_{league["name"].lower().replace(" ", "_")}'
-    #             )
-
-    #             # Generate Visualizations
-    #             generate_league_visualizations(
-    #                 standings_df, 
-    #                 league['name']
-    #             )
-
-    #             logger.info(f"Successfully processed {league['name']} data")
-
-    #         except Exception as league_error:
-    #             logger.error(f"Error processing {league['name']}: {league_error}")
     
     except Exception as e:
         logger.error(f"Critical error in main application: {e}")
