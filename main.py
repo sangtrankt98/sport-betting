@@ -1,6 +1,6 @@
 import os
 import logging
-from utils.api_client import FootballAPIClient
+from utils.api_client import FootballAPIClient, OddsAPIClient
 from utils.data_processor import DataProcessor
 from utils.cloud_storage import CloudStorageManager
 from utils.visualization import generate_league_visualizations
@@ -19,49 +19,54 @@ logger = logging.getLogger(__name__)
 def main():
     try:
         # Initialize API Client
-        api_key = os.getenv('API_FOOTBALL_KEY')
-        api_client = FootballAPIClient(api_key)
+        api_key_fb = os.getenv('API_FOOTBALL_KEY')
+        api_client_fb = FootballAPIClient(api_key_fb)
+
+        api_key_odd = os.getenv('ODDS_API_KEY')
+        api_client_odd = OddsAPIClient(api_key_odd)
 
         # Initialize Cloud Storage
         project_id = os.getenv('GOOGLE_CLOUD_PROJECT')
         cloud_storage = CloudStorageManager(project_id)
+        
+        # # Initialize Data Processor
+        data_processor = DataProcessor(api_client_odd, cloud_storage)
 
-        # Initialize Data Processor
-        data_processor = DataProcessor(api_client, cloud_storage)
+        betting_list = data_processor.fetch_multi_league_corner_odds()
+        data_processor.store_to_bigquery(betting_list, 'odd_laliga_epl')
+    #     # Define leagues to analyze
+    #     leagues = [
+    #         {'id': 39, 'name': 'Premier League', 'season': 2023},
+    #         {'id': 140, 'name': 'La Liga', 'season': 2023},
+    #         # {'id': 61, 'name': 'Ligue 1', 'season': 2023}
+    #     ]
 
-        # Define leagues to analyze
-        leagues = [
-            {'id': 39, 'name': 'Premier League', 'season': 2023},
-            {'id': 140, 'name': 'La Liga', 'season': 2023},
-            # {'id': 61, 'name': 'Ligue 1', 'season': 2023}
-        ]
+    #     # Analyze each league
+    #     for league in leagues:
+    #         try:
+    #             # Fetch standings
+    #             standings_df = data_processor.fetch_league_standings(
+    #                 league['id'], 
+    #                 league['season']
+    #             )
 
-        # Analyze each league
-        for league in leagues:
-            try:
-                # Fetch standings
-                standings_df = data_processor.fetch_league_standings(
-                    league['id'], 
-                    league['season']
-                )
+    #             # Store to BigQuery
+    #             data_processor.store_to_bigquery(
+    #                 standings_df, 
+    #                 f'standings_{league["name"].lower().replace(" ", "_")}'
+    #             )
 
-                # Store to BigQuery
-                data_processor.store_to_bigquery(
-                    standings_df, 
-                    f'standings_{league["name"].lower().replace(" ", "_")}'
-                )
+    #             # Generate Visualizations
+    #             generate_league_visualizations(
+    #                 standings_df, 
+    #                 league['name']
+    #             )
 
-                # Generate Visualizations
-                generate_league_visualizations(
-                    standings_df, 
-                    league['name']
-                )
+    #             logger.info(f"Successfully processed {league['name']} data")
 
-                logger.info(f"Successfully processed {league['name']} data")
-
-            except Exception as league_error:
-                logger.error(f"Error processing {league['name']}: {league_error}")
-
+    #         except Exception as league_error:
+    #             logger.error(f"Error processing {league['name']}: {league_error}")
+    
     except Exception as e:
         logger.error(f"Critical error in main application: {e}")
 
